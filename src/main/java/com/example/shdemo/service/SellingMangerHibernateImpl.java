@@ -84,10 +84,19 @@ public class SellingMangerHibernateImpl implements SellingManager {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	public List<Car> getAvailableCars() {
-		return sessionFactory.getCurrentSession().getNamedQuery("car.unsold")
-				.list();
+	//	return sessionFactory.getCurrentSession().getNamedQuery("car.unsold")
+	//			.list();
+		List<Car> cars = new ArrayList<Car>();
+		for(Object o : sessionFactory.getCurrentSession().getNamedQuery("car.unsold")
+				.list()) {
+			cars.add((Car) o);
+		}
+		
+		return cars;
+		
+		
 	}
 	@Override
 	public void disposeCar(Person person, Car car) {

@@ -107,8 +107,45 @@ public class SellingManagerTest {
 	}
 
 	// @Test -
+	@Test
 	public void disposeCarCheck() {
 		// Do it yourself
+		Person person = new Person();
+		person.setFirstName(NAME_2);
+		person.setPin(PIN_2);
+
+		sellingManager.addClient(person);
+
+		Person retrievedPerson = sellingManager.findClientByPin(PIN_2);
+
+		Car car = new Car();
+		car.setMake(MAKE_2);
+		car.setModel(MODEL_2);
+
+		Long carId = sellingManager.addNewCar(car);
+		
+		sellingManager.sellCar(retrievedPerson.getId(), carId);
+
+		List<Car> ownedCars = sellingManager.getOwnedCars(retrievedPerson);
+
+		assertEquals(1, ownedCars.size());
+		assertEquals(MAKE_2, ownedCars.get(0).getMake());
+		assertEquals(MODEL_2, ownedCars.get(0).getModel());
+		
+		List<Car> availableCars = sellingManager.getAvailableCars();
+		assertEquals(0, availableCars.size());
+		
+		sellingManager.disposeCar(person, car);
+		
+		List<Car> ownedCars2 = sellingManager.getOwnedCars(retrievedPerson);
+		assertEquals(0, ownedCars2.size());
+		
+		List<Car> availableCars2 = sellingManager.getAvailableCars();
+		assertEquals(1, availableCars2.size());
+		
+		assertEquals(MAKE_2, availableCars2.get(0).getMake());
+		assertEquals(MODEL_2, availableCars2.get(0).getModel());
+
 	}
 
 }
