@@ -1,4 +1,4 @@
-package com.example.shdemo.service;
+package com.marekag.spring.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.shdemo.domain.Player;
+import com.marekag.spring.domain.Player;
 
 
 @Component

@@ -1,8 +1,8 @@
-package com.example.shdemo.service;
+package com.marekag.spring.service;
 
 import java.util.List;
 
-import com.example.shdemo.domain.Player;
+import com.marekag.spring.domain.Player;
 
 public interface PlayerManager {
 	

@@ -1,4 +1,4 @@
-package com.example.shdemo.domain;
+package com.marekag.spring.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,8 +1,11 @@
-package com.example.shdemo.service;
+package com.marekag.spring.service;
 
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.shdemo.domain.Player;
+import com.marekag.spring.domain.Player;
+import com.marekag.spring.service.PlayerManager;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -101,10 +105,10 @@ public class PlayerManagerTest {
 		assertEquals(POSITION_1, newPlayer.getPosition());
 		
 		playerManager.deletePlayer(newPlayer);
-		
-		Player newestPlayer = playerManager.getPlayer(newPlayer);
 
-		assertNull(newestPlayer);
+		assertNull(playerManager.getPlayer(newPlayer));
+		assertNull(playerManager.getPlayer(player));
+
 	}
 	
 	@Test
@@ -130,6 +134,70 @@ public class PlayerManagerTest {
 		playerManager.addPlayer(player2);
 		
 		assertEquals(2, playerManager.getAllPlayers().size());
+		
+		playerManager.deleteAllPlayers();
+		
+		assertEquals(0, playerManager.getAllPlayers().size());
+		
+	}
+	
+	@Test
+	public void getPlayerTest() {
+		assertEquals(0, playerManager.getAllPlayers().size());
+		
+		Player player = new Player();
+		player.setName(NAME_1);
+		player.setLastName(LASTNAME_1);
+		player.setAge(AGE_1);
+		player.setPosition(POSITION_1);
+		
+		playerManager.addPlayer(player);
+
+		Player player2 = new Player();
+		player2.setName(NAME_2);
+		player2.setLastName(LASTNAME_2);
+		player2.setAge(AGE_2);
+		player2.setPosition(POSITION_2);
+		
+		playerManager.addPlayer(player2);
+				
+		Player newPlayer = playerManager.getPlayer(player.getId());
+		newPlayer.setName(NAME_1);
+		newPlayer.setLastName(LASTNAME_1);
+		newPlayer.setAge(AGE_1);
+		newPlayer.setPosition(POSITION_1);
+		
+	}
+	
+	@Test
+	public void getAllPlayersTest() {
+		
+		playerManager.deleteAllPlayers();
+		
+		assertEquals(0, playerManager.getAllPlayers().size());
+		
+		Player player = new Player();
+		player.setName(NAME_1);
+		player.setLastName(LASTNAME_1);
+		player.setAge(AGE_1);
+		player.setPosition(POSITION_1);
+		
+		playerManager.addPlayer(player);
+
+		Player player2 = new Player();
+		player2.setName(NAME_2);
+		player2.setLastName(LASTNAME_2);
+		player2.setAge(AGE_2);
+		player2.setPosition(POSITION_2);
+		
+		playerManager.addPlayer(player2);
+		
+		assertEquals(2, playerManager.getAllPlayers().size());
+		
+		List<Player> players = playerManager.getAllPlayers();
+		
+		assertTrue(player.equals(players.get(0)));
+		assertTrue(player2.equals(players.get(1)));
 		
 		playerManager.deleteAllPlayers();
 		
