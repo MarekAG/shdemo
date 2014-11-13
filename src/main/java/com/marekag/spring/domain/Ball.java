@@ -9,20 +9,19 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({ 
-	@NamedQuery(name = "player.all", query = "SELECT p FROM Player p"),
-	@NamedQuery(name = "player.deleteAll", query = "DELETE FROM Player")
+	@NamedQuery(name = "ball.all", query = "SELECT p FROM Ball p"),
+	@NamedQuery(name = "ball.deleteAll", query = "DELETE FROM Ball")
 	})
 
 
-
-public class Player {
+public class Ball {
 	
 	private Long id;
 	
 	private String name;
-	private String lastName;
-	private String position;
-	private int age;
+	private String color;
+	private String type;
+	private int size;
 	
 
 	@Id
@@ -39,30 +38,26 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getLastName() {
-		return lastName;
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getPosition() {
-		return position;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
+	
 
 }
 
