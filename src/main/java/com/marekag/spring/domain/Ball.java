@@ -9,7 +9,8 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({ 
-	@NamedQuery(name = "ball.all", query = "SELECT p FROM Ball p"),
+	@NamedQuery(name = "ball.all", query = "SELECT b FROM Ball b"),
+	@NamedQuery(name = "ball.getByColor", query = "SELECT b FROM Ball b WHERE b.color = :color"),
 	@NamedQuery(name = "ball.deleteAll", query = "DELETE FROM Ball")
 	})
 

@@ -42,14 +42,21 @@ public class BallManagerHibernateImpl implements BallManager {
 	public Ball getBall(Long id) {
 		return(Ball) sessionFactory.getCurrentSession().get(Ball.class, id);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Ball> getBallsByColor(String color) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().getNamedQuery("ball.getByColor").setParameter("color", color).list();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ball> getAllBalls() {
-		List<Ball> balls = new ArrayList<Ball>();
-		for(Object o : sessionFactory.getCurrentSession().getNamedQuery("ball.all").list()) {
-			balls.add((Ball) o);
-		}
+//		List<Ball> balls = new ArrayList<Ball>();
+//		for(Object o : sessionFactory.getCurrentSession().getNamedQuery("ball.all").list()) {
+//			balls.add((Ball) o);
+//		}
 		return sessionFactory.getCurrentSession().getNamedQuery("ball.all").list();
 	//	return players;
 	}
@@ -72,10 +79,10 @@ public class BallManagerHibernateImpl implements BallManager {
 
 	}
 
-	@Override
-	public void deleteAllBalls() {
-		sessionFactory.getCurrentSession().getNamedQuery("ball.deleteAll").executeUpdate();
-
-	}
+//	@Override
+//	public void deleteAllBalls() {
+//		sessionFactory.getCurrentSession().getNamedQuery("ball.deleteAll").executeUpdate();
+//
+//	}
 
 }

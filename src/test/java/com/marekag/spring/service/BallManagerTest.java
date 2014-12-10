@@ -8,6 +8,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,21 @@ public class BallManagerTest {
 	private final static String TYPE_2 = "Volleyball";
 	private final static int SIZE_2 = 4;
 	
+	int initialNrOfBalls = 0;
+	int finalNrOfBalls = 0;
+	
+	@Before
+	public void beforeTests() {
+		initialNrOfBalls = ballManager.getAllBalls().size();
+		System.out.println("Przed "+ initialNrOfBalls);
+	}
+	
+	@After
+	public  void afterTests() {
+		finalNrOfBalls = ballManager.getAllBalls().size();
+		System.out.println("Po "+ finalNrOfBalls);
+	}
+	
 	@Test
 	public void addBallTest() {		
 		
@@ -58,6 +77,8 @@ public class BallManagerTest {
 		assertEquals(SIZE_1, newBall.getSize());
 		assertEquals(TYPE_1, newBall.getType());
 		
+		ballManager.deleteBall(ball.getId());
+		
 	}
 	
 	@Test
@@ -73,13 +94,13 @@ public class BallManagerTest {
 		
 		ballManager.addBall(ball);
 		
-		Ball Ball2 = new Ball();
-		Ball2.setName(NAME_1);
-		Ball2.setColor(COLOR_1);
-		Ball2.setSize(SIZE_1);
-		Ball2.setType(TYPE_1);
+		Ball ball2 = new Ball();
+		ball2.setName(NAME_1);
+		ball2.setColor(COLOR_1);
+		ball2.setSize(SIZE_1);
+		ball2.setType(TYPE_1);
 		
-		ballManager.addBall(Ball2);
+		ballManager.addBall(ball2);
 		
 		assertNotNull(ballManager.getBall(ball));
 		Ball newBall = ballManager.getBall(ball);
@@ -99,13 +120,16 @@ public class BallManagerTest {
 		assertEquals(SIZE_1, newestBall.getSize());
 		assertEquals(TYPE_2, newestBall.getType());
 		
-		assertNotNull(ballManager.getBall(Ball2));
-		Ball newBall2 = ballManager.getBall(Ball2);
+		assertNotNull(ballManager.getBall(ball2));
+		Ball newBall2 = ballManager.getBall(ball2);
 		// sprawdzenie czy druga się nie zmieniła
 		assertEquals(NAME_1, newBall2.getName());
 		assertEquals(COLOR_1, newBall2.getColor());
 		assertEquals(SIZE_1, newBall2.getSize());
 		assertEquals(TYPE_1, newBall2.getType());
+		
+		ballManager.deleteBall(ball.getId());
+		ballManager.deleteBall(ball2.getId());
 	}
 	
 	@Test
@@ -120,13 +144,13 @@ public class BallManagerTest {
 		
 		ballManager.addBall(ball);
 		
-		Ball Ball2 = new Ball();
-		Ball2.setName(NAME_2);
-		Ball2.setColor(COLOR_2);
-		Ball2.setSize(SIZE_2);
-		Ball2.setType(TYPE_2);
+		Ball ball2 = new Ball();
+		ball2.setName(NAME_2);
+		ball2.setColor(COLOR_2);
+		ball2.setSize(SIZE_2);
+		ball2.setType(TYPE_2);
 		
-		ballManager.addBall(Ball2);
+		ballManager.addBall(ball2);
 		
 		assertNotNull(ballManager.getBall(ball));
 		Ball newBall = ballManager.getBall(ball);
@@ -142,22 +166,29 @@ public class BallManagerTest {
 		assertNull(ballManager.getBall(ball));
 		
 		// sprawdzenie czy możemy pobrać drugą
-		assertNotNull(ballManager.getBall(Ball2));
-		Ball newBall2 = ballManager.getBall(Ball2);
+		assertNotNull(ballManager.getBall(ball2));
+		Ball newBall2 = ballManager.getBall(ball2);
 		
 		// sorawdzenie czy to na pewno ten rekord
 		assertEquals(NAME_2, newBall2.getName());
 		assertEquals(COLOR_2, newBall2.getColor());
 		assertEquals(SIZE_2, newBall2.getSize());
 		assertEquals(TYPE_2, newBall2.getType());
+		
+		ballManager.deleteBall(ball2.getId());
 
 	}
 	
 	@Test
-	public void deleteAllBallsTest() {
-		ballManager.deleteAllBalls();
+	public void getByColor() {
 		
-		assertEquals(0, ballManager.getAllBalls().size());
+		List<Ball> blueBalls = ballManager.getBallsByColor(COLOR_2);
+		
+		for(Ball testingBall : blueBalls) {
+			assertEquals(COLOR_2, testingBall.getColor());
+		}
+		
+		int initialBlueBallsSize = blueBalls.size();
 		
 		Ball ball = new Ball();
 		ball.setName(NAME_1);
@@ -166,26 +197,59 @@ public class BallManagerTest {
 		ball.setType(TYPE_1);
 		
 		ballManager.addBall(ball);
-
-		Ball Ball2 = new Ball();
-		Ball2.setName(NAME_2);
-		Ball2.setColor(COLOR_2);
-		Ball2.setSize(SIZE_2);
-		Ball2.setType(TYPE_2);
 		
-		ballManager.addBall(Ball2);
+		Ball ball2 = new Ball();
+		ball2.setName(NAME_2);
+		ball2.setColor(COLOR_2);
+		ball2.setSize(SIZE_2);
+		ball2.setType(TYPE_2);
 		
-		assertEquals(2, ballManager.getAllBalls().size());
+		ballManager.addBall(ball2);
 		
-		ballManager.deleteAllBalls();
+		List<Ball> blueBalls2 = ballManager.getBallsByColor(COLOR_2);
 		
-		assertEquals(0, ballManager.getAllBalls().size());
+		assertEquals(initialBlueBallsSize+1, blueBalls2.size());
 		
+		for(Ball testingBall : blueBalls2) {
+			assertEquals(COLOR_2, testingBall.getColor());
+		}
+		
+		ballManager.deleteBall(ball.getId());
+		ballManager.deleteBall(ball2.getId());
 	}
+//	@Test
+//	public void deleteAllBallsTest() {
+//		ballManager.deleteAllBalls();
+//		
+//		assertEquals(0, ballManager.getAllBalls().size());
+//		
+//		Ball ball = new Ball();
+//		ball.setName(NAME_1);
+//		ball.setColor(COLOR_1);
+//		ball.setSize(SIZE_1);
+//		ball.setType(TYPE_1);
+//		
+//		ballManager.addBall(ball);
+//
+//		Ball Ball2 = new Ball();
+//		Ball2.setName(NAME_2);
+//		Ball2.setColor(COLOR_2);
+//		Ball2.setSize(SIZE_2);
+//		Ball2.setType(TYPE_2);
+//		
+//		ballManager.addBall(Ball2);
+//		
+//		assertEquals(2, ballManager.getAllBalls().size());
+//		
+//		ballManager.deleteAllBalls();
+//		
+//		assertEquals(0, ballManager.getAllBalls().size());
+//		
+//	}
 	
 	@Test
 	public void getBallTest() {
-		assertEquals(0, ballManager.getAllBalls().size());
+		assertEquals(initialNrOfBalls, ballManager.getAllBalls().size());
 		
 		Ball ball = new Ball();
 		ball.setName(NAME_1);
@@ -195,13 +259,13 @@ public class BallManagerTest {
 		
 		ballManager.addBall(ball);
 
-		Ball Ball2 = new Ball();
-		Ball2.setName(NAME_2);
-		Ball2.setColor(COLOR_2);
-		Ball2.setSize(SIZE_2);
-		Ball2.setType(TYPE_2);
+		Ball ball2 = new Ball();
+		ball2.setName(NAME_2);
+		ball2.setColor(COLOR_2);
+		ball2.setSize(SIZE_2);
+		ball2.setType(TYPE_2);
 		
-		ballManager.addBall(Ball2);
+		ballManager.addBall(ball2);
 				
 		assertNotNull(ballManager.getBall(ball.getId()));
 		Ball newBall = ballManager.getBall(ball.getId());
@@ -210,14 +274,17 @@ public class BallManagerTest {
 		newBall.setSize(SIZE_1);
 		newBall.setType(TYPE_1);
 		
+		ballManager.deleteBall(ball.getId());
+		ballManager.deleteBall(ball2.getId());
+		
 	}
 	
 	@Test
 	public void getAllBallsTest() {
 		
-		ballManager.deleteAllBalls();
+	//	ballManager.deleteAllBalls();
 		
-		assertEquals(0, ballManager.getAllBalls().size());
+		assertEquals(initialNrOfBalls, ballManager.getAllBalls().size());
 		
 		Ball ball = new Ball();
 		ball.setName(NAME_1);
@@ -227,24 +294,27 @@ public class BallManagerTest {
 		
 		ballManager.addBall(ball);
 
-		Ball Ball2 = new Ball();
-		Ball2.setName(NAME_2);
-		Ball2.setColor(COLOR_2);
-		Ball2.setSize(SIZE_2);
-		Ball2.setType(TYPE_2);
+		Ball ball2 = new Ball();
+		ball2.setName(NAME_2);
+		ball2.setColor(COLOR_2);
+		ball2.setSize(SIZE_2);
+		ball2.setType(TYPE_2);
 		
-		ballManager.addBall(Ball2);
+		ballManager.addBall(ball2);
 		
-		assertEquals(2, ballManager.getAllBalls().size());
+		assertEquals(initialNrOfBalls+2, ballManager.getAllBalls().size());
 		
-		List<Ball> balls = ballManager.getAllBalls();
+		ballManager.deleteBall(ball.getId());
+		ballManager.deleteBall(ball2.getId());
 		
-		assertTrue(ball.equals(balls.get(0)));
-		assertTrue(Ball2.equals(balls.get(1)));
+	//	List<Ball> balls = ballManager.getAllBalls();
 		
-		ballManager.deleteAllBalls();
+//		assertTrue(ball.equals(balls.get(0)));
+//		assertTrue(Ball2.equals(balls.get(1)));
 		
-		assertEquals(0, ballManager.getAllBalls().size());
+	//	ballManager.deleteAllBalls();
+		
+	//	assertEquals(0, ballManager.getAllBalls().size());
 		
 	}
 	

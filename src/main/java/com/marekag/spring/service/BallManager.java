@@ -9,10 +9,11 @@ public interface BallManager {
 	void addBall(Ball ball);
 	Ball getBall(Ball ball);
 	Ball getBall(Long id);
+	List<Ball> getBallsByColor(String color);
 	List<Ball> getAllBalls();
 	void updateBall(Ball ball, String type);
 	void deleteBall(Ball ball);
 	void deleteBall(Long id);
-	void deleteAllBalls();	
+	//void deleteAllBalls();	
 
 }
