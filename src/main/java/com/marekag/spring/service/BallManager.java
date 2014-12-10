@@ -3,6 +3,7 @@ package com.marekag.spring.service;
 import java.util.List;
 
 import com.marekag.spring.domain.Ball;
+import com.marekag.spring.domain.Manufacturer;
 
 public interface BallManager {
 	
@@ -14,6 +15,18 @@ public interface BallManager {
 	void updateBall(Ball ball, String type);
 	void deleteBall(Ball ball);
 	void deleteBall(Long id);
-	//void deleteAllBalls();	
+	
+	void addManufacturer(Manufacturer manufacturer);
+	Manufacturer getManufacturer(Manufacturer manufacturer);
+	Manufacturer getManufacturer(Long id);
+	List<Manufacturer> getManufacturersByYOC(int YOC);
+	List<Manufacturer> getAllManufacturers();
+	void updateManufacturer(Manufacturer manufacturer, String name);
+	void deleteManufacturer(Manufacturer manufacturer);
+	void deleteManufacturer(Long id);
+	
+	List<Ball> getManufacturerBalls(Manufacturer manufacturer);
+	List<Ball> getManufacturerBalls(Long id);
+
 
 }
