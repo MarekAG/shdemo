@@ -75,14 +75,19 @@ public class BallManagerHibernateImpl implements BallManager {
 
 	@Override
 	public void deleteBall(Ball ball) {
-		sessionFactory.getCurrentSession().delete(ball);
+		ball = (Ball) sessionFactory.getCurrentSession().get(Ball.class, ball.getId());
+		if (sessionFactory.getCurrentSession().contains(ball)) {
+			sessionFactory.getCurrentSession().delete(ball);
+		}
 
 	}
 
 	@Override
 	public void deleteBall(Long id) {
-		sessionFactory.getCurrentSession().delete(getBall(id));
+		if (getBall(id) != null) {
 
+			deleteBall(getBall(id));
+		}
 	}
 
 	@Override
@@ -130,14 +135,20 @@ public class BallManagerHibernateImpl implements BallManager {
 
 	@Override
 	public void deleteManufacturer(Manufacturer manufacturer) {
-		sessionFactory.getCurrentSession().delete(manufacturer);
-		
+		if (manufacturer.getId() != null) {
+		//	manufacturer = (Manufacturer) sessionFactory.getCurrentSession().get(Manufacturer.class, manufacturer.getId());
+			if (manufacturer.getBalls() != null) {
+				manufacturer.getBalls().clear();
+			}
+			sessionFactory.getCurrentSession().delete(manufacturer);
+		}
 	}
 
 	@Override
 	public void deleteManufacturer(Long id) {
-		sessionFactory.getCurrentSession().delete(getManufacturer(id));
-		
+		if (getManufacturer(id) != null) {
+			deleteManufacturer(getManufacturer(id));
+		}
 	}
 
 	@Override
@@ -154,10 +165,10 @@ public class BallManagerHibernateImpl implements BallManager {
 
 	@Override
 	public void assignBallToManufacturer(Ball ball, Manufacturer manufacturer) {
+		manufacturer = (Manufacturer) sessionFactory.getCurrentSession().get(Manufacturer.class, manufacturer.getId());
+		ball = (Ball) sessionFactory.getCurrentSession().get(Ball.class, ball.getId());
+
 		manufacturer.getBalls().add(ball);
-		
-		// ?
-	//	ball.setManufacturer(manufacturer);
 		
 	}
 
@@ -171,9 +182,16 @@ public class BallManagerHibernateImpl implements BallManager {
 
 	@Override
 	public void removeManufacturerFromBall(Ball ball) {
-		// ?
-		ball.setManufacturer(null);
-		
+		List <Manufacturer> manufacturers = getAllManufacturers();
+		ball = (Ball) sessionFactory.getCurrentSession().get(Ball.class, ball.getId());
+		for (Manufacturer manufacturer : manufacturers) {
+			List <Ball> balls = manufacturer.getBalls();
+			if (balls != null) {
+				if (balls.contains(ball)) {
+					balls.remove(ball);
+				}
+			}
+		}
 	}
 
 	@Override
