@@ -63,7 +63,13 @@ public class BallManagerHibernateImpl implements BallManager {
 
 	@Override
 	public void updateBall(Ball ball, String type) {
+		
+		if (ball.getId() == null) {
+			addBall(ball);
+		}
+		
 		Ball b = (Ball) sessionFactory.getCurrentSession().get(Ball.class, ball.getId());
+		
 		b.setType(type);
 	}
 
@@ -114,6 +120,10 @@ public class BallManagerHibernateImpl implements BallManager {
 
 	@Override
 	public void updateManufacturer(Manufacturer manufacturer, String name) {
+		
+		if (manufacturer.getId() == null) {
+			addManufacturer(manufacturer);
+		}
 		Manufacturer m = (Manufacturer) sessionFactory.getCurrentSession().get(Manufacturer.class, manufacturer.getId());
 		m.setName(name);	
 	}

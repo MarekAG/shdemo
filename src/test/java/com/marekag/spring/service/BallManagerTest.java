@@ -137,7 +137,8 @@ public class BallManagerTest {
 		assertEquals(SIZE_1, newBall.getSize());
 		assertEquals(TYPE_1, newBall.getType());
 		// zmiana typu
-		newBall.setType(TYPE_2);
+		ballManager.updateBall(newBall, TYPE_2);
+	//	newBall.setType(TYPE_2);
 		
 		assertNotNull(ballManager.getBall(newBall));
 		Ball newestBall = ballManager.getBall(newBall);
@@ -158,6 +159,55 @@ public class BallManagerTest {
 		ballManager.deleteBall(ball.getId());
 		ballManager.deleteBall(ball2.getId());
 	}
+	
+	@Test
+	public void updateManufacturerTest() {
+		
+		
+		// dodanie dwóch producentów
+		Manufacturer manufacturer = new Manufacturer();
+		manufacturer.setName(NAME_MAN_1);
+		manufacturer.setAddress(ADDRESS_1);
+		manufacturer.setYOC(YOC_1);
+		
+		ballManager.addManufacturer(manufacturer);
+		
+		Manufacturer manufacturer2 = new Manufacturer();
+		manufacturer2.setName(NAME_MAN_1);
+		manufacturer2.setAddress(ADDRESS_1);
+		manufacturer2.setYOC(YOC_1);
+		
+		ballManager.addManufacturer(manufacturer2);
+		
+		assertNotNull(ballManager.getManufacturer(manufacturer));
+		Manufacturer newManufacturer = ballManager.getManufacturer(manufacturer);
+		// pobranie pierwszego producenta
+		assertEquals(NAME_MAN_1, newManufacturer.getName());
+		assertEquals(ADDRESS_1, newManufacturer.getAddress());
+		assertEquals(YOC_1, newManufacturer.getYOC());
+		// zmiana nazwy
+		ballManager.updateManufacturer(newManufacturer, NAME_MAN_2);
+	//	newManufacturer.setName(NAME_MAN_2);
+		
+		assertNotNull(ballManager.getManufacturer(newManufacturer));
+		Manufacturer newestManufacturer = ballManager.getManufacturer(newManufacturer);
+		// sprawdzenie czy pierwszy się zmienił
+		assertEquals(NAME_MAN_2, newestManufacturer.getName());
+		assertEquals(ADDRESS_1, newestManufacturer.getAddress());
+		assertEquals(YOC_1, newestManufacturer.getYOC());
+		
+		assertNotNull(ballManager.getManufacturer(manufacturer2));
+		Manufacturer newManufacturer2 = ballManager.getManufacturer(manufacturer2);
+		// sprawdzenie czy drugi się nie zmienił
+		assertEquals(NAME_MAN_1, newManufacturer2.getName());
+		assertEquals(ADDRESS_1, newManufacturer2.getAddress());
+		assertEquals(YOC_1, newManufacturer2.getYOC());
+		
+		ballManager.deleteManufacturer(manufacturer);
+		ballManager.deleteManufacturer(manufacturer2.getId());
+	}
+	
+	
 	
 	@Test
 	public void deleteBallTest() {
@@ -205,6 +255,55 @@ public class BallManagerTest {
 		ballManager.deleteBall(ball2.getId());
 
 	}
+	
+	//TODO: refactor to Manufacturer
+	@Test
+	public void deleteManufacturerTest() {
+		
+		//dodanie dwóch piłek
+		Ball ball = new Ball();
+		ball.setName(NAME_1);
+		ball.setColor(COLOR_1);
+		ball.setSize(SIZE_1);
+		ball.setType(TYPE_1);
+		
+		ballManager.addBall(ball);
+		
+		Ball ball2 = new Ball();
+		ball2.setName(NAME_2);
+		ball2.setColor(COLOR_2);
+		ball2.setSize(SIZE_2);
+		ball2.setType(TYPE_2);
+		
+		ballManager.addBall(ball2);
+		
+		assertNotNull(ballManager.getBall(ball));
+		Ball newBall = ballManager.getBall(ball);
+		// sprawdzenie czy pierwsza jest w bazie
+		assertEquals(NAME_1, newBall.getName());
+		assertEquals(COLOR_1, newBall.getColor());
+		assertEquals(SIZE_1, newBall.getSize());
+		assertEquals(TYPE_1, newBall.getType());
+		// usunięcie pierwszej z bazy
+		ballManager.deleteBall(newBall);
+		// ponowne sprawdzenie czy pierwsza jest w bazie
+		assertNull(ballManager.getBall(newBall));
+		assertNull(ballManager.getBall(ball));
+		
+		// sprawdzenie czy możemy pobrać drugą
+		assertNotNull(ballManager.getBall(ball2));
+		Ball newBall2 = ballManager.getBall(ball2);
+		
+		// sorawdzenie czy to na pewno ten rekord
+		assertEquals(NAME_2, newBall2.getName());
+		assertEquals(COLOR_2, newBall2.getColor());
+		assertEquals(SIZE_2, newBall2.getSize());
+		assertEquals(TYPE_2, newBall2.getType());
+		
+		ballManager.deleteBall(ball2.getId());
+
+	}
+	
 	
 	@Test
 	public void getByColor() {
