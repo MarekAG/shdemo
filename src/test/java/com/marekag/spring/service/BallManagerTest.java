@@ -18,6 +18,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.marekag.spring.domain.Ball;
+import com.marekag.spring.domain.Manufacturer;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -83,6 +84,27 @@ public class BallManagerTest {
 		assertEquals(TYPE_1, newBall.getType());
 		
 		ballManager.deleteBall(ball.getId());
+		
+	}
+	
+	@Test
+	public void addManufacturerTest() {		
+		
+		Manufacturer manufacturer = new Manufacturer();
+		manufacturer.setName(NAME_MAN_1);
+		manufacturer.setAddress(ADDRESS_1);
+		manufacturer.setYOC(YOC_1);
+		
+		ballManager.addManufacturer(manufacturer);
+		
+		assertNotNull(ballManager.getManufacturer(manufacturer));
+		Manufacturer newManufacturer = ballManager.getManufacturer(manufacturer);
+		
+		assertEquals(NAME_MAN_1, newManufacturer.getName());
+		assertEquals(ADDRESS_1, newManufacturer.getAddress());
+		assertEquals(YOC_1, newManufacturer.getYOC());
+		
+		ballManager.deleteManufacturer(manufacturer);
 		
 	}
 	
