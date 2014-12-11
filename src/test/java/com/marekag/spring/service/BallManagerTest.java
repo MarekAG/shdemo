@@ -4,14 +4,11 @@ package com.marekag.spring.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.marekag.spring.domain.Ball;
-import com.marekag.spring.service.BallManager;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -110,7 +106,9 @@ public class BallManagerTest {
 		assertEquals(SIZE_1, newBall.getSize());
 		assertEquals(TYPE_1, newBall.getType());
 		// zmiana typu
-		newBall.setType(TYPE_2);
+		//newBall.setType(TYPE_2);
+		ballManager.updateBall(newBall, TYPE_2);
+
 		
 		assertNotNull(ballManager.getBall(newBall));
 		Ball newestBall = ballManager.getBall(newBall);
@@ -269,10 +267,10 @@ public class BallManagerTest {
 				
 		assertNotNull(ballManager.getBall(ball.getId()));
 		Ball newBall = ballManager.getBall(ball.getId());
-		newBall.setName(NAME_1);
-		newBall.setColor(COLOR_1);
-		newBall.setSize(SIZE_1);
-		newBall.setType(TYPE_1);
+		assertEquals(NAME_1, newBall.getName());
+		assertEquals(COLOR_1, newBall.getColor());
+		assertEquals(SIZE_1, newBall.getSize());
+		assertEquals(TYPE_1, newBall.getType());
 		
 		ballManager.deleteBall(ball.getId());
 		ballManager.deleteBall(ball2.getId());
