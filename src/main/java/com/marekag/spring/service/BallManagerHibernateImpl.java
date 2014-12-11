@@ -142,5 +142,35 @@ public class BallManagerHibernateImpl implements BallManager {
 		return balls;
 	}
 
+	@Override
+	public void assignBallToManufacturer(Ball ball, Manufacturer manufacturer) {
+		manufacturer.getBalls().add(ball);
+		
+		// ?
+	//	ball.setManufacturer(manufacturer);
+		
+	}
+
+	@Override
+	public void assignBallToManufacturer(Long ballId, Long manufacturerId) {
+		Ball ball = (Ball) sessionFactory.getCurrentSession().get(Ball.class, ballId);
+		Manufacturer manufacturer = (Manufacturer) sessionFactory.getCurrentSession().get(Manufacturer.class, manufacturerId);
+		
+		assignBallToManufacturer(ball, manufacturer);
+	}
+
+	@Override
+	public void removeManufacturerFromBall(Ball ball) {
+		// ?
+		ball.setManufacturer(null);
+		
+	}
+
+	@Override
+	public void removeManufacturerFromBall(Long id) {
+		Ball ball = (Ball) sessionFactory.getCurrentSession().get(Ball.class, id);
+		removeManufacturerFromBall(ball);
+	}
+
 
 }

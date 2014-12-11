@@ -27,6 +27,9 @@ public interface BallManager {
 	
 	List<Ball> getManufacturerBalls(Manufacturer manufacturer);
 	List<Ball> getManufacturerBalls(Long id);
-
+	void assignBallToManufacturer(Ball ball, Manufacturer manufacturer);
+	void assignBallToManufacturer(Long ballId, Long manufacturerId);
+	void removeManufacturerFromBall(Ball ball);
+	void removeManufacturerFromBall(Long id);
 
 }

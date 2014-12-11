@@ -39,6 +39,15 @@ public class BallManagerTest {
 	private final static String TYPE_2 = "Volleyball";
 	private final static int SIZE_2 = 4;
 	
+	private final static String NAME_MAN_1 = "Firma1";
+	private final static String ADDRESS_1 = "Adres1";
+	private final static int YOC_1 = 1981;
+	
+	private final static String NAME_MAN_2 = "Firma2";
+	private final static String ADDRESS_2 = "Adres2";
+	private final static int YOC_2 = 1992;
+
+	
 	int initialNrOfBalls = 0;
 	int finalNrOfBalls = 0;
 	
